@@ -1,147 +1,175 @@
+/*
+   This contains the basic code for the title screen of the game Jumper.
+   Currently it contains instructions and basic button animations, as well
+   as images of the sprites that will appear in the game.
+*/
+
 var sketchProc=function(processingInstance){ with (processingInstance){
 size(400, 400); 
 frameRate(60);
 
+// Menu state constants
+var STATE_MAINMENU = 0;
+var STATE_INSTRUCTIONS = 1;
+
+var menuState = STATE_MAINMENU;
 
 /*
-    This is a basic program demonstrating particle systems and
-    bezier shapes
+   =====OBJECT DECLARATIONS=====
 */
 
-// Global variables
-var particles = [];
-var MAX_PARTICLES = 200;
-var particleTicks = 0;
+function titleObj(x, y) {
+   this.x = x;
+   this.y = y;
+   this.alpha = 255;
+   this.alphaChange = -1;
+};
+
+function instructionsObj(x, y) {
+   this.x = x;
+   this.y = y;
+   this.width = 250;
+   this.height = 35;
+};
+
+function backObj(x, y) {
+   this.x = x;
+   this.y = y;
+   this.width = 250;
+   this.height = 35;
+};
+
+// Images for buttons and sprites
+var titleImg = loadImage("assets/jumper.png");
+var instructionsImg = loadImage("assets/instructions.png");
+var backImg = loadImage("assets/back.png");
+var keyImg = loadImage("assets/key.png");
+var playerImg = loadImage("assets/player.png");
+var enemyImg = loadImage("assets/adversary1.png");
+var doorImg = loadImage("assets/door.png");
 
 /*
-    =====OBJECT DECLARATIONS=====
+   Draw functions for the buttons
 */
 
-var fountain = function(x, y) {
-    this.x = x;
-    this.y = y;
+titleObj.prototype.draw = function() {
+   noStroke();
+   fill(0, 0, 255, this.alpha);
+   rect(this.x, this.y, 250, 75)
+   image(titleImg, this.x, this.y, 250, 75);
 };
 
-var particleObj = function(x, y) {
-    this.x = x;
-    this.y = y;
-    this.r = random(0, 255);
-    this.g = random(0, 255);
-    this.b = random(0, 255);
-    this.velocityX = random(-0.5, 0.5);
-    this.velocityY = 1;
+instructionsObj.prototype.draw = function() {
+   noStroke();
+   fill(0, 0, 255);
+   rect(this.x, this.y, this.width, this.height);
+   image(instructionsImg, this.x, this.y, this.width, this.height);
 };
 
-var catObj = function(x, y) {
-    this.x = x;
-    this.y = y;
-    //Bezier parameters
-    this.x1 = x - 50;
-    this.y1 = y;
-    this.x2 = x - 100;
-    this.y2 = y + 30;
-    this.cx1 = x - 37;
-    this.cy1 = y + 50;
-    this.cx2 = x - 125;
-    this.cy2 = y - 75;
-    this.cy2Dir = 1;
-    this.x2Dir = -0.5;
-};
-
-/*
-    =====DRAW FUNCTIONS FOR OBJECTS=====
-*/
-
-fountain.prototype.draw = function() {
-    stroke(171, 171, 171);
-    fill(235, 235, 235);
-    rect(this.x - 50, this.y, 100, 40, 5);
-    fill(187, 219, 240);
-    ellipse(this.x, this.y, 100, 40);
-    fill(235, 235, 235);
-    rect(this.x - 15, this.y - 100, 30, 100);
-};
-
-particleObj.prototype.draw = function() {
-    stroke(0, 136, 255);
-    fill(this.r, this.g, this.b);
-    ellipse(this.x, this.y, 10, 15);
-};
-
-catObj.prototype.draw = function() {
-    stroke(0, 0, 0);
-    fill(184, 184, 184);
-    ellipse(this.x, this.y, 100, 40);
-    rect(this.x - 30, this.y + 15, 10, 40);
-    rect(this.x + 20, this.y + 15, 10, 40);
-    ellipse(this.x + 50, this.y - 15, 35, 35);
-    noFill();
-    bezier(this.x1, this.y1, this.cx1, this.cy1, this.cx2, this.cy2, this.x2, this.y2);
-    fill(0, 0, 0);
-    ellipse(this.x + 60, this.y - 20, 5, 5);
+backObj.prototype.draw = function() {
+   noStroke();
+   fill(0, 0, 255);
+   rect(this.x, this.y, this.width, this.height);
+   image(backImg, this.x, this.y, this.width, this.height);
 };
 
 /*
-    Update function for the particle object. Increments its x and
-    y position based on its velocity.
+   Update function for the title image. The background fades in and out
+   as time goes by to provide an animation.
 */
 
-particleObj.prototype.update = function() {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
+titleObj.prototype.update = function() {
+   if (this.alpha >= 255) {
+      this.alphaChange = -1;
+   }
+   else if (this.alpha <= 50) {
+      this.alphaChange = 1;
+   }
+   this.alpha += this.alphaChange;
+}
+
+/*
+   Update function for the instruction button object. If the mouse is within
+   bounds of the button, the button will grow in size. If the user clicks while
+   in bounds, the state will update to the instruction screen.
+*/
+
+instructionsObj.prototype.update = function() {
+   if (mouseX < this.x + 250 && mouseX > this.x && mouseY > this.y && mouseY < this.y + 35) {
+      this.width = 270;
+      this.height = 40;
+   }
+   else {
+      this.width = 250;
+      this.height = 35;
+   }
 };
 
 /*
-    Update function for the cat object. Updates the control points for
-    the bezier line (the cat's tail) to animate it.
+   Update function for the back button. Similar to the instructions button, however
+   the state will change to the main title screen when clicked.
 */
 
-catObj.prototype.update = function() {
-    if (this.cy2 < (this.y - 75) || this.cy2 > this.y) {
-        this.cy2Dir *= -1;    
-    }
-    if (this.x2 < this.x - 140 || this.x2 > this.x - 90) {
-        this.x2Dir *= -1;   
-    }
-    this.x2 += this.x2Dir;
-    this.cy2 += this.cy2Dir;
+backObj.prototype.update = function() {
+   if (mouseX < this.x + 250 && mouseX > this.x && mouseY > this.y && mouseY < this.y + 35) {
+      this.width = 270;
+      this.height = 40;
+   }
+   else {
+      this.width = 250;
+      this.height = 35;
+   }
 };
 
-var f1 = new fountain(200, 200);
-var c1 = new catObj(300, 300);
+
+var title = new titleObj(75, 25);
+var instructions = new instructionsObj(75, 200);
+var back = new backObj(75, 350);
 
 /*
-    Update function for the particle object. It spawns new particles 
-    every 5 ticks if the max number of particles hasn't been reached.
-    It also removes the particles when it reaches the bottom of the fountain.
+   Determines whether or not the user clicks within the bounds of the instruction
+   button or the back button.
 */
 
-var updateParticles = function() {
-    particleTicks++;
-    if (particles.length < MAX_PARTICLES && particleTicks >= 5) {
-        particles.push(new particleObj(random(190, 210), 110));
-        particleTicks = 0;
-    }
-    for (var i = 0; i < particles.length; i++) {
-        if (particles[i].y > 200) {
-            particles.splice(i, 1);
-            i--;
-        }
-        else {
-            particles[i].update();
-            particles[i].draw();
-        }
-    }
+mouseClicked = function() {
+   console.log("mouse pressed");
+   if (mouseX < instructions.x + 250 && mouseX > instructions.x && mouseY > instructions.y && mouseY < instructions.y + 35 && menuState == STATE_MAINMENU) {
+      menuState = STATE_INSTRUCTIONS;
+   }
+   if (mouseX < back.x + 250 && mouseX > back.x && mouseY > back.y && mouseY < back.y + 35 && menuState == STATE_INSTRUCTIONS) {
+      menuState = STATE_MAINMENU;
+   }
 };
 
 draw = function() {
-    background(189, 253, 255);
-    f1.draw();
-    updateParticles();
-    c1.draw();
-    c1.update();
+   switch(menuState) {
+      case STATE_MAINMENU:
+         background(0, 255, 0);
+         title.update();
+         title.draw();
+         instructions.update();
+         instructions.draw();
+         break;
+      case STATE_INSTRUCTIONS:
+         background(0, 255, 0);
+         image(instructionsImg, 75, 25, 250, 35);
+         back.update();
+         back.draw();
+         fill(0, 0, 0);
+         image(keyImg, 15, 100, 20, 20);
+         image(doorImg, 45, 100, 20, 20);
+         image(playerImg, 30, 150, 30, 55);
+         image(enemyImg, 17, 215, 55, 30);
+         text("The goal of jumper is to reach the top of the level", 90, 100);
+         text("and escape through the door. Watch out though, as", 90, 115);
+         text("there is a boss guarding the door that holds the key", 90, 130);
+         text("and you must obtain the key before you can escape.", 90, 145);
+         text("Move your character left and right using the A and D", 90, 175);
+         text("keys, and jump using the W key.", 90, 190);
+         text("As you climb your way to the top, you will encounter", 90, 220);
+         text("adversaries that will try to stop you. You can shoot", 90, 235);
+         text("at them by clicking in their direction.", 90, 250);
+   }
 };
-
-
 
 }};
