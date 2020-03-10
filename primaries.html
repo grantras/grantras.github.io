@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<link href="https://fonts.googleapis.com/css?family=Spartan&display=swap" rel="stylesheet">
+<style>
+.wrap
+{
+    width: 100%px;
+    height: 218px; /* 274.79px */
+    padding: 0 px;
+    overflow: hidden;
+}
+
+.frame
+{
+    width: 100%;
+    height: 200px;
+    border: 0px;
+
+    -ms-transform: scale(2.00);
+    -moz-transform: scale(2.00);
+    -o-transform: scale(2.00);
+    -webkit-transform: scale(2.00);
+    transform: scale(2.00);
+
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+	
+    width:100%;       /* set this to approximate width of entire page you're embedding */
+    height:500px;      /* determines where the bottom of the page cuts off */
+    margin-left:-10px; /* clipping left side of page */
+    margin-top:-175px;  /* clipping top of page */
+    overflow:hidden;
+}
+
+#over { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:83px; 
+	left:250px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+#over2 { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:83px; 
+	left:925px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+#over3 { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:309px; 
+	left:213px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+#over4 { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:309px; 
+	left:930px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+#over5 { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:535px; 
+	left:192px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+#over6 { 
+    color: blue;
+    font-size:24em; 
+	position:absolute; 
+	top:535px; 
+	left: 900px; 
+	z-index:2; 
+	background:#FFFFFF;
+}
+
+.flex-container {
+  display: flex;
+  background-color: #dddddd;
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  margin:2px;
+  padding: 2px;
+  font-size: 2px;
+}
+
+.wrapper {
+  display: flex;
+
+}
+
+.wrapper input[type="text"] {
+    flex: 1 1 auto;
+}
+
+h1 {
+    text-align: center;
+	font-family: 'Spartan', sans-serif;
+{
+
+</style>
+
+<div class="flex-container" >
+<h1>Idaho</h1>
+<div id="container" class="wrap" style="flex-basis: 50%">
+   
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=ID&OFFICE=P"></iframe id="embed"> <div id="over"></div>
+</div>
+<h1>Michigan</h1>
+<div id="container" class="wrap" style="flex-basis: 50%">
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=MI&OFFICE=P"></iframe id="embed"> <div id="over2"></div>
+</div>
+</div>
+<div class="flex-container" >
+<h1>Mississippi</h1>
+<div id="container" class="wrap" style="flex-basis: 50%">
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=MS&OFFICE=P"></iframe id="embed"> <div id="over3"></div>
+</div>
+<h1>Missouri</h1>
+<div id="container" class="wrap" style="flex-basis: 50%">
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=MO&OFFICE=P"></iframe id="embed"> <div id="over4"></div>
+</div>	
+</div>
+<div class="flex-container" >
+<h1>North Dakota</h1>
+<div id="container" class="wrap" style="flex-basis: 50%">
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=ND&OFFICE=P"></iframe id="embed"> <div id="over5"></div>
+</div>
+<h1>Washington</h1>	
+<div id="container" class="wrap" style="flex-basis: 50%">
+   <iframe id="embed" class="frame" src="https://interactives.ap.org/primary-elections-2020-03-10/?site=thenewyorker&STATE=WA&OFFICE=P"></iframe id="embed"> <div id="over6">
+</div>
